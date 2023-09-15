@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int mx=0;
+        for(int i=0;i<s.size();i++){
+            long long msk1=0,msk2=0;
+            int msk3=0;
+            for(int j=i;j<127;j++){
+                if(s[j]>=32&&s[j]<=92){
+                    int newVal=s[j]-32;
+                    if(msk1&(long long)1<<newVal) break;
+                    msk1|=(long long)1<<newVal;
+                }else if(s[j]>=93&&s[j]<=126) {
+                    int newVal=s[j]-93;
+                    if(msk2&(long long)1<<newVal) break;
+                    msk2|=(long long)1<<newVal;
+                }else{
+                    break;
+                }
+                cout<<i<<" "<<j<<" "<<s[j]<<endl;
+                mx=max(mx,j-i+1);
+            }
+        }
+        return mx;
+    }
+};
