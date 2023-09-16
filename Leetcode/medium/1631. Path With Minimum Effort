@@ -1,0 +1,35 @@
+class Solution {
+public:
+   
+    int minimumEffortPath(vector<vector<int>>& heights) {
+       priority_queue<pair<int,pair<int,int>>>pq;
+       int row=heights.size();
+       int col=heights[0].size();
+       vector<vector<int>>length(row,vector<int>(col,INT_MAX));
+       pq.push({0,{0,0}});
+       int dx[]={-1,1,0,0};
+       int dy[]={0,0,-1,1};
+       while(!pq.empty()){
+           auto top=pq.top();
+           int mx_val=-top.first;
+           int r=top.second.first;
+           int c=top.second.second;
+           pq.pop();
+           if(r==row-1&&c==col-1){
+               return mx_val;
+           }
+           for(int i=0;i<4;i++){
+               int nr=r+dx[i];
+               int nc=c+dy[i];
+               if(nr<row&&nc<col&&nr>=0&&nc>=0){
+                   int new_val=max(abs(heights[r][c]-heights[nr][nc]),mx_val);
+                   if(new_val<length[nr][nc]){
+                       length[nr][nc]=new_val;
+                       pq.push({-new_val,{nr,nc}});
+                   }
+               }
+           }
+       }
+       return length[row-1][col-1];
+    }
+};
