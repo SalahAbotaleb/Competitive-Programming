@@ -1,0 +1,40 @@
+class Solution {
+public:
+    //the idea behind this problem is that limit the max number I can visit a node
+    //this can be achieved by memoization, if a node is visited with a state previously
+    //visited don't visit again, example 0->1->2->0 
+    /**
+        visit 0 with state 0001
+        visit 1 with state 0011
+        visit 2 with state 0111
+        visit 0 with state 0111 (may be redundant but bfs will go towards solution)
+        visit 1 with state 0111 (may be redundant but bfs will go towards solution)
+        visit 2 with state 0111 (visited previously thus cycle is limited)
+    */
+
+    int shortestPathLength(vector<vector<int>>& graph) {
+        int n=graph.size();
+        int ans=INT_MAX;
+        vector<vector<int>>v(n,vector<int>(1<<(n+1),-1));
+        queue<pair<int,int>>q;
+        for(int it=0;it<n;it++){
+            q.push({it,1<<it});
+            v[it][1<<it]=0;
+        }
+        while(!q.empty()){
+            auto curr=q.front();
+            q.pop();
+            int idx=curr.first;
+            int msk=curr.second;
+            if(msk==(1<<n)-1) return v[idx][msk];
+            for(auto it:graph[idx]){
+                int newIdx=it;
+                int newMsk=msk|(1<<it);
+                if(v[newIdx][newMsk]!=-1) continue;
+                v[newIdx][newMsk]=v[idx][msk]+1;
+                q.push({newIdx,newMsk});
+            }
+        }
+        return ans;
+    }
+};
