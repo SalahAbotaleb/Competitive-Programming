@@ -1,0 +1,23 @@
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        vector<vector<int>>isPalindromic(s.size(),vector<int>(s.size()+1,0));
+        for(int i=0;i<s.size();i++){
+            isPalindromic[i][0]=1;
+            isPalindromic[i][1]=1;
+        }
+        int mxi=1,mnj=0;
+        for(int i=2;i<=s.size();i++){
+            for(int j=0;j+i<=s.size();j++){
+                if(s[j]==s[j+i-1])
+                { isPalindromic[j][i]=isPalindromic[j+1][i-2];
+                if(isPalindromic[j][i]&&i>(mxi)){
+                    mxi=i;
+                    mnj=j;
+                }
+                }
+            }
+        }
+        return s.substr(mnj,mxi);
+    }
+};
