@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int add(int a,int b,int mod){
+        return (a+b+mod)%mod;
+    }
+    int search(vector<int>& nums, int target) {
+        int shift_factor=-1;
+        int l=0;
+        int r=nums.size()-1;
+        if(nums[l]>nums[r])
+        while(l<=r){
+            int md=(l+r)/2;
+            if(nums[md]>nums.back()){
+                shift_factor=md;
+                l=md+1;
+            }else{
+                r=md-1;
+            }
+        }
+        shift_factor = (shift_factor==-1?0:shift_factor+1);
+        int ans=-1;
+        l=0;
+        r=nums.size();
+        while(l<=r){
+            int md_before=(l+r)/2;
+            int md=(md_before+shift_factor)%(nums.size());
+            if(nums[md]<target){
+                l=md_before+1;
+            }else if(nums[md]>target){
+                r=md_before-1;
+            }else {
+                ans=md;
+                break;
+            }
+        }
+        return ans;
+    }
+};
