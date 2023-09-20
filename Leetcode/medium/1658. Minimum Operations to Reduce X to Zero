@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int minOperations(vector<int>& nums, int x) {
+    int i=0;
+    int j=nums.size()-1;
+    int sum=0;
+    int lsize=0;
+    while(i<=j){
+        if(sum+nums[i]>x) break;
+        sum+=nums[i];
+        i++;
+        lsize++;
+    }
+    int ans=INT_MAX;
+    i--;
+    if(sum == x) ans=lsize;
+    if(ans==INT_MAX){
+        while(j>i){
+            if(sum+nums[j]>x) break;
+            sum+=nums[j];
+            lsize++;
+            j--;
+        }
+        if(sum == x) ans=(lsize);
+    }
+    while(i>-1&&j>i){
+        sum+=nums[j];
+        j--;
+        while(i>-1&&sum>x){
+            sum-=nums[i];
+            i--;
+        }
+        if(sum==x) ans=min(ans,i+1+(int)nums.size()-1-j);
+    }
+    return (ans==INT_MAX?-1:ans);
+}
+};
